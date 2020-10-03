@@ -9,6 +9,7 @@ class FaceRecognition:
         self.image = cv.imread(file_name)
         image_gray = cv.cvtColor(self.image, cv.COLOR_BGR2GRAY)
         self.face = self.face_cascade.detectMultiScale(image_gray, 1.1, 20)
+        # a face is a tuple of 4 values (x, y, w, h)
 
         self.total_detected = 0
         # number will be written at the end of file name to prevent overwriting in case of multiple
@@ -25,6 +26,7 @@ class FaceRecognition:
     def save_portraits(self, file_name, path):
         """Extends the borders of the detected faces to create full portraits, crops them and saves them to individual
         files resized to 200x300 in the "bearbeitet" folder"""
+
         for (x, y, w, h) in self.face:
             image_copy = self.image
             self.total_detected += 1
@@ -43,10 +45,16 @@ class FaceRecognition:
             # cv.waitKey()  # show next picture on key press
 
 
-folder_path = os.getcwd()
-if not os.path.exists("bearbeitet"):
-    os.mkdir("bearbeitet")
-for file in os.listdir(folder_path):
-    if ".jpg" in file or ".jpeg" in file or ".png" in file:
-        faces = FaceRecognition(file)
-        faces.save_portraits(file, folder_path)
+if __name__ == "__main__":
+    folder_path = os.getcwd()
+    if not os.path.exists("bearbeitet"):
+        os.mkdir("bearbeitet")
+    for file in os.listdir(folder_path):
+        if ".jpg" in file or ".jpeg" in file or ".png" in file:
+            faces = FaceRecognition(file)
+            faces.save_portraits(file, folder_path)
+            if faces.total_detected == 0:
+                print "ERROR: No faces detected in " + file
+            else:
+                print str(faces.total_detected) + " face(s) found in " + file
+    raw_input("Press Enter to continue...")
