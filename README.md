@@ -4,3 +4,5 @@ A small project made to automate my teacher's work at the start of the year when
 This little script detects all the faces from all of the pictures in the same folder and crops them out in 200x300 portraits, reducing that work to a few seconds.
 
 Face detection is done by OpenCV.
+
+Made in Python 2.7
